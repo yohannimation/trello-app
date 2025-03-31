@@ -1,24 +1,45 @@
 <script setup lang="ts">
+  // Basic import
   import { ref, useTemplateRef, onMounted } from 'vue'
+  import { useColumnsStore } from '@/stores/columns'
+
+  // Components
   import CardForm from '../CardForm/CardForm.vue'
 
+  // Interface
   import type { CardListInterface } from './CardList.interface.ts'
 
+  // Setup the store
+  const storeColumns = useColumnsStore()
+
+  // Props
   const props = defineProps<{
-    cards?: CardListInterface;
+    columnId: number;
+    cardsList: CardListInterface;
   }>()
 
-  const { cards } = props
+  // Variables
+  const {
+    cards,
+    columnId
+  } = props
 
+  // Functions
   const saveCard = (updatedCard) => {
-    cards[updatedCard.id] = updatedCard
+    storeColumns.updateCard(
+      columnId,
+      updatedCard.id,
+      updatedCard.title,
+      updatedCard.content,
+    )
   }
 </script>
 
 <template>
-  <ul>
-    <li v-for="card in cards">
+  <ul class="cardList">
+    <li v-for="card in cardsList">
       <CardForm
+        :columnId="columnId"
         :card="card"
         :onSave="saveCard"
       />
@@ -29,9 +50,12 @@
 <style scoped lang="scss">
   @use "@/styles/_variables.scss" as *;
 
-  .formGroup {
+  .cardList {
     display: flex;
     flex-direction: column;
-    gap: .5rem;
+    gap: 15px;
+    margin: 20px 0;
+    padding: 0;
+    list-style: none;
   }
 </style>

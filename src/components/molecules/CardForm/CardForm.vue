@@ -1,29 +1,30 @@
 <script setup lang="ts">
+  // Basic import
   import { ref, useTemplateRef, onMounted } from 'vue'
-  import InputButton from '../../atoms/InputButton/InputButton.vue'
-  import InputTextGroup from '../InputTextLabel/InputTextLabel.vue'
-  import InputTextareaGroup from '../InputTextareaLabel/InputTextareaLabel.vue'
 
+  // Components
+  import InputButton from '../../atoms/InputButton/InputButton.vue'
+  import InputTextLabel from '../InputTextLabel/InputTextLabel.vue'
+  import InputTextareaLabel from '../InputTextareaLabel/InputTextareaLabel.vue'
+
+  // Interface
   import type { CardFormInterface } from './CardForm.interface.ts'
 
+  // Props
   const props = defineProps<{
-    card?: CardFormInterface;
+    columnId: number
+    card: CardFormInterface;
     onSave?: () => void;
   }>()
 
+  // Variables
   let cardData: CardFormInterface;
   if (props.card) {
     cardData = props.card
-  } else {
-    cardData = {
-      id: 0,
-      title: "",
-      content: ""
-    }
   }
-
   let displaySaveButton: bool = ref(false)
 
+  // Functions
   const setTitle = (title) => {
     cardData.title = title
   }
@@ -40,13 +41,13 @@
 
 <template>
   <form class="formGroup">
-    <InputTextGroup
+    <InputTextLabel
       label="Card title"
       :value="cardData.title"
       :onFocusOut="setTitle"
       @click="displaySaveButton = true"
     />
-    <InputTextareaGroup
+    <InputTextareaLabel
       label="Card content"
       :value="cardData.content"
       :onFocusOut="setContent"
@@ -63,5 +64,8 @@
     display: flex;
     flex-direction: column;
     gap: .5rem;
+    padding: $cardPadding;
+    background-color: $cardBackground;
+    border-radius: $cardBorderRadius;
   }
 </style>

@@ -1,33 +1,64 @@
 <script setup lang="ts">
+  // Basic import
   import { ref, useTemplateRef, onMounted } from 'vue'
+  import { useColumnsStore } from '@/stores/columns'
+
+  // Components
+  import InputButton from '../../atoms/InputButton/InputButton.vue'
   import Column from '../../organisms/Column/Column.vue'
 
+  // Interface
   import type ColumnsListInterface from './ColumnsList.interface'
 
-  const props = defineProps<{
-    columnsList?: ColumnsListInterface;
-  }>()
+  // Setup the store
+  const storeColumns = useColumnsStore()
+  storeColumns.getColumns()
 
-  const { columnsList } = props
+  // Functions
+  const addColumn = () => {
+    storeColumns.addColumns("Change me")
+  }
 </script>
 
 <template>
-  <ul class="columnList">
-    <li v-for="column in columnsList">
-      <Column
-        :column="column"
-      />
-    </li>
-  </ul>
+  <div class="container">
+    <InputButton
+      class="container-addButton"
+      label="Add column"
+      @click="addColumn"
+    />
+    <ul class="container-columnList">
+      <li v-for="column in storeColumns.columns">
+        <Column
+          :column="column"
+        />
+      </li>
+    </ul>
+  </div>
 </template>
 
 <style scoped lang="scss">
   @use "@/styles/_variables.scss" as *;
 
-  .columnList {
+  .container {
     display: flex;
-    gap: 2rem;
-    padding: 1rem;
-    border-radius: $borderRadius;
+    flex-direction: column;
+    padding: $columnsPadding;
+    background-color: $columnsBackground;
+    border-radius: $columnsBorderRadius;
+    overflow: scroll;
+
+    &-addButton {
+      max-width: 100px;
+    }
+
+    &-columnList {
+      display: flex;
+      gap: 15px;
+      margin: 0;
+      margin-top: 20px;
+      padding: 0;
+      list-style: none;
+    }
   }
 </style>
