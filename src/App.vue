@@ -1,9 +1,9 @@
 <script setup>
-  import ColumnsList from './components/template/ColumnsList/ColumnsList.vue'
+  import Kamban from './pages/Kamban.vue'
 </script>
 
 <template>
-  <ColumnsList />
+  <Kamban />
 </template>
 
 <style scoped>

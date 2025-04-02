@@ -1,47 +1,29 @@
 <script setup lang="ts">
   // Basic import
-  import { ref, useTemplateRef, onMounted } from 'vue'
   import { useColumnsStore } from '@/stores/columns'
 
   // Components
   import CardForm from '../CardForm/CardForm.vue'
 
   // Interface
-  import type { CardListInterface } from './CardList.interface.ts'
+  import type { CardsListInterface } from './CardsList.interface.ts'
 
   // Setup the store
-  const storeColumns = useColumnsStore()
+  const ColumnsStore = useColumnsStore()
 
   // Props
   const props = defineProps<{
     columnId: number;
-    cardsList: CardListInterface;
+    cardsList: CardsListInterface;
   }>()
-
-  // Variables
-  const {
-    cards,
-    columnId
-  } = props
-
-  // Functions
-  const saveCard = (updatedCard) => {
-    storeColumns.updateCard(
-      columnId,
-      updatedCard.id,
-      updatedCard.title,
-      updatedCard.content,
-    )
-  }
 </script>
 
 <template>
   <ul class="cardList">
-    <li v-for="card in cardsList">
+    <li v-for="card in cardsList" :key="card.id">
       <CardForm
         :columnId="columnId"
         :card="card"
-        :onSave="saveCard"
       />
     </li>
   </ul>

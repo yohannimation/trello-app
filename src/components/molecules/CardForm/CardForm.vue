@@ -1,6 +1,7 @@
 <script setup lang="ts">
   // Basic import
-  import { ref, useTemplateRef, onMounted } from 'vue'
+  import { ref } from 'vue'
+  import { useColumnsStore } from '@/stores/columns'
 
   // Components
   import InputButton from '../../atoms/InputButton/InputButton.vue'
@@ -10,19 +11,20 @@
   // Interface
   import type { CardFormInterface } from './CardForm.interface.ts'
 
+  // Setup the store
+  const ColumnsStore = useColumnsStore()
+
   // Props
   const props = defineProps<{
-    columnId: number
+    columnId: number;
     card: CardFormInterface;
     onSave?: () => void;
   }>()
 
   // Variables
-  let cardData: CardFormInterface;
-  if (props.card) {
-    cardData = props.card
-  }
-  let displaySaveButton: bool = ref(false)
+  let cardData: CardFormInterface = props.card
+  let displaySaveButton = ref<boolean>(false)
+
 
   // Functions
   const setTitle = (title) => {
@@ -32,15 +34,27 @@
     cardData.content = content
   }
   const saveData = () => {
+    ColumnsStore.updateCard(
+      props.columnId,
+      cardData.id,
+      cardData.title,
+      cardData.content,
+    )
     displaySaveButton.value = false
-    if (props.onSave) {
-      props.onSave(cardData);
-    }
   }
 </script>
 
 <template>
   <form class="formGroup">
+    <InputButton
+      label="X"
+      @click="
+        ColumnsStore.deleteCard(
+          columnId,
+          cardData.id
+        )
+      "
+    />
     <InputTextLabel
       label="Card title"
       :value="cardData.title"
@@ -53,7 +67,11 @@
       :onFocusOut="setContent"
       @click="displaySaveButton = true"
     />
-    <InputButton label="Save" @click="saveData" v-if="displaySaveButton"></InputButton>
+    <InputButton
+      label="Save"
+      @click="saveData"
+      v-if="displaySaveButton"
+    />
   </form>
 </template>
 

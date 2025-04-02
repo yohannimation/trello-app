@@ -1,71 +1,110 @@
-import { ref } from 'vue'
-import { defineStore } from 'pinia'
+import { defineStore } from "pinia";
 
-export const useColumnsStore = defineStore('columns', () => {
-  const columns = ref([])
+export const useColumnsStore = defineStore("columns", {
+  state: () => ({
+    columns: [],
+  }),
 
-  function addCard(columnId: number) {
-    columns.value[columnId].cardsList.push({
-      id: columns.value[columnId].cardsList.length,
-      title: "",
-      content: ""
-    })
+  actions: {
+    addCard(columnId: number) {
+      const columnIndex = this.getColumnIndex(columnId)
 
-    setColumns()
-  }
+      this.columns[columnIndex].cardsList.push({
+        id: Date.now(),
+        title: "",
+        content: "",
+      });
 
-  function addColumns(columnsName: string) {
-    columns.value.push({
-      id: columns.value.length,
-      name: columnsName,
-      cardsList: []
-    })
+      this.setColumns();
+    },
 
-    setColumns()
-  }
+    addColumns() {
+      this.columns.push({
+        id: Date.now(),
+        name: "Column name",
+        cardsList: []
+      })
 
-  function getColumns() {
-    const storedColumns = localStorage.getItem('columns')
+      this.setColumns();
+    },
 
-    if (storedColumns) {
-      const parsedColumns = JSON.parse(storedColumns)
-      columns.value = parsedColumns
-    } else {
-      setColumns()
+    deleteCard(columnId: number, cardId: number) {
+      const columnIndex = this.getColumnIndex(columnId)
+      const cardIndex = this.getCardIndex(
+        this.columns[columnIndex].cardsList,
+        cardId
+      )
+
+      this.columns[columnIndex].cardsList.splice(cardIndex, 1);
+
+      this.setColumns();
+    },
+
+    deleteColumn(columnId: number) {
+      const columnIndex = this.getColumnIndex(columnId)
+
+      this.columns.splice(columnIndex, 1);
+
+      this.setColumns();
+    },
+
+    updateCard(
+      columnId: number,
+      cardId: number,
+      cardTitle: string,
+      cardContent: string
+    ) {
+      const columnIndex = this.getColumnIndex(columnId)
+      const cardIndex = this.getCardIndex(
+        this.columns[columnIndex].cardsList,
+        cardId
+      )
+
+      this.columns[columnIndex].cardsList[cardIndex].title = cardTitle
+      this.columns[columnIndex].cardsList[cardIndex].content = cardContent
+
+      this.setColumns()
+    },
+
+    updateColumn(columnId: number, name: string) {
+      const columnIndex = this.getColumnIndex(columnId)
+
+      if (columnIndex >= 0) {
+        this.columns[columnIndex].name = name;
+      }
+
+      this.setColumns();
+    },
+
+    setColumns() {
+      localStorage.setItem("columns", JSON.stringify(this.columns));
+    },
+
+    initColumns() {
+      const storedColumns = localStorage.getItem("columns");
+
+      if (storedColumns) {
+        const parsedColumns = JSON.parse(storedColumns);
+        this.columns = parsedColumns;
+      } else {
+        this.setColumns();
+      }
+    },
+  },
+
+  getters: {
+    getColumns: (state) => {
+      return state.columns;
+    },
+
+    getColumnIndex: (state) => (columnId) => {
+      const columnIndex = state.columns.findIndex(column => column.id === columnId);
+      return columnIndex
+    },
+
+    getCardIndex: (state) => (cardsList, cardId) => {
+      const cardIndex = cardsList.findIndex(card => card.id === cardId);
+      return cardIndex
     }
-  }
-
-  function setColumns() {
-    localStorage.setItem('columns', JSON.stringify(columns.value))
-  }
-
-  function updateCard(
-    columnId: number,
-    cardId: number,
-    cardTitle: string,
-    cardContent: string
-  ) {
-    columns.value[columnId].cardsList[cardId].title = cardTitle
-    columns.value[columnId].cardsList[cardId].content = cardContent
-
-    setColumns()
-  }
-
-  function updateColumn(
-    columnId: number,
-    name: string
-  ) {
-    columns.value[columnId].name = name
-
-    setColumns()
-  }
-
-  return {
-    columns,
-    addCard,
-    addColumns,
-    getColumns,
-    updateCard,
-    updateColumn
-  }
-})
+  },
+});

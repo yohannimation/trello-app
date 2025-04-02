@@ -1,23 +1,14 @@
 <script setup lang="ts">
   // Basic import
-  import { ref, useTemplateRef, onMounted } from 'vue'
   import { useColumnsStore } from '@/stores/columns'
 
   // Components
   import InputButton from '../../atoms/InputButton/InputButton.vue'
   import Column from '../../organisms/Column/Column.vue'
 
-  // Interface
-  import type ColumnsListInterface from './ColumnsList.interface'
-
   // Setup the store
-  const storeColumns = useColumnsStore()
-  storeColumns.getColumns()
-
-  // Functions
-  const addColumn = () => {
-    storeColumns.addColumns("Change me")
-  }
+  const ColumnsStore = useColumnsStore()
+  ColumnsStore.initColumns()
 </script>
 
 <template>
@@ -25,10 +16,13 @@
     <InputButton
       class="container-addButton"
       label="Add column"
-      @click="addColumn"
+      @click="ColumnsStore.addColumns()"
     />
     <ul class="container-columnList">
-      <li v-for="column in storeColumns.columns">
+      <li
+        v-for="(column) in ColumnsStore.columns"
+        :key="column.id"
+      >
         <Column
           :column="column"
         />

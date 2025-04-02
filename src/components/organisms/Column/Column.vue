@@ -1,6 +1,6 @@
 <script setup lang="ts">
   // Basic import
-  import { ref, useTemplateRef, onMounted } from 'vue'
+  import { ref } from 'vue'
   import { useColumnsStore } from '@/stores/columns'
 
   // Components
@@ -9,14 +9,14 @@
   import CardsList from '../../molecules/CardsList/CardsList.vue'
 
   // Interface
-  import type ColumnInterface from './Column.interface.ts'
+  import type { ColumnInterface } from './Column.interface.ts'
 
   // Setup the store
-  const storeColumns = useColumnsStore()
+  const ColumnsStore = useColumnsStore()
 
   // Props
   const props = defineProps<{
-    column?: ColumnInterface;
+    column: ColumnInterface;
   }>()
 
   // Variables
@@ -29,11 +29,8 @@
   const nameValue = ref(name)
 
   // Functions
-  const addCard = () => {
-    storeColumns.addCard(id)
-  }
   const saveColumnName = () => {
-    storeColumns.updateColumn(id, nameValue)
+    ColumnsStore.updateColumn(id, nameValue.value)
     formOpen.value = false
   }
   const setNewNameValue = (columnName) => {
@@ -48,21 +45,23 @@
         label="Column name"
         :onFocusOut="setNewNameValue"
         :value="nameValue"
-        @click="displaySaveButton = true"
+        @click="formOpen = true"
       />
-      <InputButton label="Save" @click="saveColumnName"></InputButton>
+      <InputButton label="Save" @click="saveColumnName" />
     </form>
-    <h1
-      v-else
-      class="column-title"
-      @click="formOpen = true"
-    >{{ nameValue }}</h1>
+    <div v-else>
+      <h1
+        class="column-title"
+        @click="formOpen = true"
+      >{{ nameValue }}</h1>
+      <InputButton label="X" @click="ColumnsStore.deleteColumn(id)" />
+    </div>
 
     <CardsList
       :columnId="id"
       :cardsList="cardsList"
     />
-    <InputButton label="Add card" @click="addCard"></InputButton>
+    <InputButton label="Add card" @click="ColumnsStore.addCard(id)" />
   </div>
 </template>
 
