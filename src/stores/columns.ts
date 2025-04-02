@@ -9,7 +9,7 @@ export const useColumnsStore = defineStore("columns", {
     addCard(columnId: number) {
       const columnIndex = this.getColumnIndex(columnId)
 
-      this.columns[columnIndex].cardsList.push({
+      this.columns[columnIndex].cardsList.unshift({
         id: Date.now(),
         title: "",
         content: "",

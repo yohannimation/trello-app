@@ -49,7 +49,10 @@
       />
       <InputButton label="Save" @click="saveColumnName" />
     </form>
-    <div v-else>
+    <div
+      class="column-header"
+      v-else
+    >
       <h1
         class="column-title"
         @click="formOpen = true"
@@ -74,6 +77,12 @@
     padding: $columnPadding;
     background-color: $columnBackground;
     border-radius: $columnBorderRadius;
+
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
 
     &-nameForm {
       display: flex;

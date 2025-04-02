@@ -28,7 +28,7 @@
   button {
     padding: $buttonPadding;
     border: none;
-    border-radius: $borderRadius;
+    border-radius: $buttonBorderRadius;
     cursor: pointer;
   }
 
