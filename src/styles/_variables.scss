@@ -11,12 +11,22 @@ $columnBackground: rgba(255, 255, 255, .5);
 // Card
 $cardPadding: 11px;
 $cardBorderRadius: 10px;
-$cardBackground: #3b8dc4;
+$cardBackground: #e9e9ed;
 
 // Button
 $buttonPadding: .5rem .8rem;
 $buttonBorderRadius: 11px;
 
+// Input
 $inputPadding: .5rem;
+$inputBorderRadius: 11px;
 
-$borderRadius: .3rem;
+$transition: .2s;
+
+$borderRadius: (
+    xs: 3px,
+    s: 5px,
+    m: 11px,
+    l: 15px,
+    xl: 25px
+);
