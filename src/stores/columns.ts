@@ -1,110 +1,69 @@
+// Basic import
 import { defineStore } from "pinia";
+import { useCardsStore } from '@/stores/cards'
+
+// Interface
+import { ColumnInterface } from './column.interface'
 
 export const useColumnsStore = defineStore("columns", {
   state: () => ({
-    columns: [],
+    columns: [] as ColumnInterface[],
   }),
 
   actions: {
-    addCard(columnId: number) {
-      const columnIndex = this.getColumnIndex(columnId)
-
-      this.columns[columnIndex].cardsList.unshift({
+    addColumn() {
+      const columnData: ColumnInterface = {
         id: Date.now(),
-        title: "",
-        content: "",
-      });
+        name: ""
+      }
 
-      this.setColumns();
-    },
-
-    addColumns() {
-      this.columns.push({
-        id: Date.now(),
-        name: "Column name",
-        cardsList: []
-      })
-
-      this.setColumns();
-    },
-
-    deleteCard(columnId: number, cardId: number) {
-      const columnIndex = this.getColumnIndex(columnId)
-      const cardIndex = this.getCardIndex(
-        this.columns[columnIndex].cardsList,
-        cardId
-      )
-
-      this.columns[columnIndex].cardsList.splice(cardIndex, 1);
-
-      this.setColumns();
+      this.columns.push(columnData)
+      this.persist()
     },
 
     deleteColumn(columnId: number) {
-      const columnIndex = this.getColumnIndex(columnId)
+      const cardsStore = useCardsStore()
+      cardsStore.deleteCardsFromColumnId(columnId)
 
-      this.columns.splice(columnIndex, 1);
+      const columnIndex = this.getColumnIndexById(columnId)
+      this.columns.splice(columnIndex, 1)
 
-      this.setColumns();
+      this.persist()
     },
 
-    updateCard(
-      columnId: number,
-      cardId: number,
-      cardTitle: string,
-      cardContent: string
-    ) {
-      const columnIndex = this.getColumnIndex(columnId)
-      const cardIndex = this.getCardIndex(
-        this.columns[columnIndex].cardsList,
-        cardId
-      )
-
-      this.columns[columnIndex].cardsList[cardIndex].title = cardTitle
-      this.columns[columnIndex].cardsList[cardIndex].content = cardContent
-
-      this.setColumns()
-    },
-
-    updateColumn(columnId: number, name: string) {
-      const columnIndex = this.getColumnIndex(columnId)
-
+    updateColumn(columnData: ColumnInterface) {
+      const columnIndex = this.getColumnIndexById(columnData.id)
       if (columnIndex >= 0) {
-        this.columns[columnIndex].name = name;
+        this.columns[columnIndex] = columnData
       }
 
-      this.setColumns();
-    },
-
-    setColumns() {
-      localStorage.setItem("columns", JSON.stringify(this.columns));
+      this.persist()
     },
 
     initColumns() {
-      const storedColumns = localStorage.getItem("columns");
+      const storedColumns = localStorage.getItem("columns")
 
       if (storedColumns) {
-        const parsedColumns = JSON.parse(storedColumns);
+        const parsedColumns = JSON.parse(storedColumns)
         this.columns = parsedColumns;
       } else {
-        this.setColumns();
+        localStorage.setItem("columns", JSON.stringify(this.columns))
       }
     },
+
+    persist() {
+      localStorage.setItem("columns", JSON.stringify(this.columns))
+    }
   },
 
   getters: {
     getColumns: (state) => {
-      return state.columns;
+      return state.columns
     },
 
-    getColumnIndex: (state) => (columnId) => {
-      const columnIndex = state.columns.findIndex(column => column.id === columnId);
+    getColumnIndexById: (state) => (columnId: number) => {
+      const columnIndex = state.columns.findIndex((column) => column.id === columnId)
       return columnIndex
     },
-
-    getCardIndex: (state) => (cardsList, cardId) => {
-      const cardIndex = cardsList.findIndex(card => card.id === cardId);
-      return cardIndex
-    }
   },
 });
