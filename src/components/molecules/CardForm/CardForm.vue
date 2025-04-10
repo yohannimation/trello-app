@@ -1,76 +1,60 @@
 <script setup lang="ts">
   // Basic import
-  import { ref } from 'vue'
-  import { useColumnsStore } from '@/stores/columns'
+  import { useCardsStore } from '@/stores/cards'
 
   // Components
   import InputButton from '../../atoms/InputButton/InputButton.vue'
-  import InputTextLabel from '../InputTextLabel/InputTextLabel.vue'
-  import InputTextareaLabel from '../InputTextareaLabel/InputTextareaLabel.vue'
+  import InputText from '../../atoms/InputText/InputText.vue'
+  import InputTextarea from '../../atoms/InputTextarea/InputTextarea.vue'
 
   // Interface
-  import type { CardFormInterface } from './CardForm.interface.ts'
+  import type { CardInterface } from '../../../stores/card.interface'
 
   // Setup the store
-  const ColumnsStore = useColumnsStore()
+  const cardStore = useCardsStore()
 
   // Props
-  const props = defineProps<{
-    columnId: number;
-    card: CardFormInterface;
-    onSave?: () => void;
-  }>()
+  const props = defineProps<CardInterface>()
 
   // Variables
-  let cardData: CardFormInterface = props.card
-  let displaySaveButton = ref<boolean>(false)
-
+  var cardData: CardInterface = {
+    id: props.id,
+    columnId: props.columnId,
+    name: props.name,
+    content: props.content
+  }
 
   // Functions
-  const setTitle = (title) => {
-    cardData.title = title
+  const setTitle = (newName) => {
+    cardData.name = newName
+    updateDeployCardData()
   }
-  const setContent = (content) => {
-    cardData.content = content
+  const setContent = (newContent) => {
+    cardData.content = newContent
+    updateDeployCardData()
   }
-  const saveData = () => {
-    ColumnsStore.updateCard(
-      props.columnId,
-      cardData.id,
-      cardData.title,
-      cardData.content,
-    )
-    displaySaveButton.value = false
+  const updateDeployCardData = () => {
+    cardStore.updateCard(cardData)
   }
 </script>
 
 <template>
-  <form class="formGroup">
-    <InputButton
-      label="X"
-      @click="
-        ColumnsStore.deleteCard(
-          columnId,
-          cardData.id
-        )
-      "
-    />
-    <InputTextLabel
+  <form class="form">
+    <div class="form-header">
+      <InputText
       label="Card title"
-      :value="cardData.title"
+      :value="cardData.name"
       :onFocusOut="setTitle"
-      @click="displaySaveButton = true"
-    />
-    <InputTextareaLabel
+      />
+      <InputButton
+        label="X"
+        @click="cardStore.deleteCard(cardData.id)"
+      />
+    </div>
+    <InputTextarea
       label="Card content"
       :value="cardData.content"
       :onFocusOut="setContent"
-      @click="displaySaveButton = true"
-    />
-    <InputButton
-      label="Save"
-      @click="saveData"
-      v-if="displaySaveButton"
     />
   </form>
 </template>
@@ -78,12 +62,33 @@
 <style scoped lang="scss">
   @use "@/styles/_variables.scss" as *;
 
-  .formGroup {
+  .form {
     display: flex;
     flex-direction: column;
     gap: .5rem;
     padding: $cardPadding;
     background-color: $cardBackground;
-    border-radius: $cardBorderRadius;
+    border-radius: map-get($borderRadius, s);
+
+    &-header {
+      display: grid;
+      grid-template-columns: 80% calc(20% - 11px);
+      gap: 10px;
+
+      input {
+        border-radius: map-get($borderRadius, xs);
+        font-weight: 600;
+      }
+    }
+
+    textarea {
+      min-height: 50px;
+      background-color: white;
+      border-radius: map-get($borderRadius, xs);
+    }
+
+    button {
+      border-radius: map-get($borderRadius, xs);
+    }
   }
 </style>

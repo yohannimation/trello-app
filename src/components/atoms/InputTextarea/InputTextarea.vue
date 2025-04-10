@@ -12,9 +12,10 @@
 
 <template>
   <textarea
-    :id="uniqLabel"
-    :name="uniqLabel"
+    :id="label"
+    :name="label"
     :value
+    :placeholder="label"
     :disabled
     @blur="setValue"
   ></textarea>
@@ -25,9 +26,15 @@
 
   textarea {
     padding: $inputPadding;
+    background-color: transparent;
     border: none;
-    border-radius: $borderRadius;
+    border-radius: $inputBorderRadius;
     cursor: text;
+    transition: $transition;
+  }
+
+  textarea:hover, textarea:focus {
+    background-color: white;
   }
 
   textarea:disabled {

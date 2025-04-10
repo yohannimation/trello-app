@@ -1,70 +1,51 @@
 <script setup lang="ts">
   // Basic import
-  import { ref } from 'vue'
   import { useColumnsStore } from '@/stores/columns'
+  import { useCardsStore } from '@/stores/cards'
 
   // Components
   import InputButton from '../../atoms/InputButton/InputButton.vue'
-  import InputTextLabel from '../../molecules/InputTextLabel/InputTextLabel.vue'
+  import InputText from '../../atoms/InputText/InputText.vue'
   import CardsList from '../../molecules/CardsList/CardsList.vue'
 
   // Interface
-  import type { ColumnInterface } from './Column.interface.ts'
+  import { ColumnInterface } from '../../../stores/column.interface'
 
   // Setup the store
-  const ColumnsStore = useColumnsStore()
+  const columnsStore = useColumnsStore()
+  const cardsStore = useCardsStore()
 
   // Props
-  const props = defineProps<{
-    column: ColumnInterface;
-  }>()
+  const props = defineProps<ColumnInterface>()
 
   // Variables
-  const {
-    id,
-    name,
-    cardsList
-  } = props.column
-  const formOpen = ref(false)
-  const nameValue = ref(name)
+  var columnData: ColumnInterface = {
+    id: props.id,
+    name: props.name
+  }
 
   // Functions
-  const saveColumnName = () => {
-    ColumnsStore.updateColumn(id, nameValue.value)
-    formOpen.value = false
-  }
   const setNewNameValue = (columnName) => {
-    nameValue.value = columnName
+    columnData.name = columnName
+    columnsStore.updateColumn(columnData)
   }
 </script>
 
 <template>
   <div class="column">
-    <form v-if="formOpen" class="column-nameForm">
-      <InputTextLabel
+    <div class="column-header">
+      <InputText
         label="Column name"
+        :value="columnData.name"
         :onFocusOut="setNewNameValue"
-        :value="nameValue"
-        @click="formOpen = true"
       />
-      <InputButton label="Save" @click="saveColumnName" />
-    </form>
-    <div
-      class="column-header"
-      v-else
-    >
-      <h1
-        class="column-title"
-        @click="formOpen = true"
-      >{{ nameValue }}</h1>
-      <InputButton label="X" @click="ColumnsStore.deleteColumn(id)" />
+      <InputButton label="X" @click="columnsStore.deleteColumn(columnData.id)" />
     </div>
 
     <CardsList
-      :columnId="id"
-      :cardsList="cardsList"
+      :columnId="columnData.id"
     />
-    <InputButton label="Add card" @click="ColumnsStore.addCard(id)" />
+    <InputButton label="Add card" @click="cardsStore.addCard(columnData.id)" />
   </div>
 </template>
 
@@ -75,24 +56,24 @@
     display: flex;
     flex-direction: column;
     padding: $columnPadding;
+    max-width: 250px;
     background-color: $columnBackground;
-    border-radius: $columnBorderRadius;
+    border-radius: map-get($borderRadius, l);
 
     &-header {
-      display: flex;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 80% calc(20% - 11px);
       gap: 10px;
+
+      input {
+        border-radius: map-get($borderRadius, s);
+        font-size: 1.1rem;
+        font-weight: 800;
+      }
     }
 
-    &-nameForm {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    &-title {
-      margin: 0;
+    button {
+      border-radius: map-get($borderRadius, s);
     }
   }
-
 </style>

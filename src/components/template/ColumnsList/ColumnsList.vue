@@ -1,5 +1,6 @@
 <script setup lang="ts">
   // Basic import
+  import { watch } from 'vue'
   import { useColumnsStore } from '@/stores/columns'
 
   // Components
@@ -7,8 +8,8 @@
   import Column from '../../organisms/Column/Column.vue'
 
   // Setup the store
-  const ColumnsStore = useColumnsStore()
-  ColumnsStore.initColumns()
+  const columnsStore = useColumnsStore()
+  columnsStore.initColumns()
 </script>
 
 <template>
@@ -16,15 +17,16 @@
     <InputButton
       class="container-addButton"
       label="Add column"
-      @click="ColumnsStore.addColumns()"
+      @click="columnsStore.addColumn()"
     />
     <ul class="container-columnList">
       <li
-        v-for="(column) in ColumnsStore.columns"
+        v-for="(column) in columnsStore.columns"
         :key="column.id"
       >
         <Column
-          :column="column"
+          :id="column.id"
+          :name="column.name"
         />
       </li>
     </ul>
@@ -39,7 +41,7 @@
     flex-direction: column;
     padding: $columnsPadding;
     background-color: $columnsBackground;
-    border-radius: $columnsBorderRadius;
+    border-radius: map-get($borderRadius, xl);
     overflow: scroll;
 
     &-addButton {

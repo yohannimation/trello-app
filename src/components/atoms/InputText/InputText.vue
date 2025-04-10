@@ -12,10 +12,11 @@
 
 <template>
   <input
-    :id="uniqLabel"
-    :name="uniqLabel"
+  :id="label"
+    :name="label"
     type="text"
     :value
+    :placeholder="label"
     :disabled
     @blur="setValue"
   />
@@ -26,9 +27,15 @@
 
   input {
     padding: $inputPadding;
+    background-color: transparent;
     border: none;
-    border-radius: $borderRadius;
+    border-radius: $inputBorderRadius;
     cursor: text;
+    transition: $transition;
+  }
+
+  input:hover, input:focus {
+    background-color: white;
   }
 
   input:disabled {
