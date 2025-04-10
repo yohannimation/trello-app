@@ -1,15 +1,26 @@
 <script setup lang="ts">
   // Basic import
-  import { watch } from 'vue'
   import { useColumnsStore } from '@/stores/columns'
+  import { useCardsStore } from '@/stores/cards'
 
   // Components
   import InputButton from '../../atoms/InputButton/InputButton.vue'
   import Column from '../../organisms/Column/Column.vue'
 
+  // Interface
+  import type { CardInterface } from '@/stores/card.interface'
+
   // Setup the store
   const columnsStore = useColumnsStore()
-  columnsStore.initColumns()
+  const cardsStore = useCardsStore()
+
+  // Functions
+  const onDrop = (event, columnId) => {
+    const stringifiedCard = event.dataTransfer.getData('card')
+    var cardData: CardInterface = JSON.parse(stringifiedCard)
+
+    cardsStore.updateCard({ ...cardData, columnId: columnId })
+  }
 </script>
 
 <template>
@@ -23,6 +34,9 @@
       <li
         v-for="(column) in columnsStore.columns"
         :key="column.id"
+        @drop="onDrop($event, column.id)"
+        @dragenter.prevent
+        @dragover.prevent
       >
         <Column
           :id="column.id"

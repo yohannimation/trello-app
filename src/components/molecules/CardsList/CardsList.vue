@@ -6,9 +6,6 @@
   // Components
   import CardForm from '../CardForm/CardForm.vue'
 
-  // Interface
-  import type { CardInterface } from '@/stores/card.interface'
-
   // Setup the store
   const cardsStore = useCardsStore()
 
@@ -21,11 +18,25 @@
   const cardsData = computed(() => {
     return cardsStore.getCardsForColumnId(props.columnId)
   })
+
+  // Functions
+  const startDrag = (event, card) => {
+    const stringifiedCard = JSON.stringify(card)
+
+    event.dataTransfer.dropEffect = 'move'
+    event.dataTransfer.effectAllowed = 'move'
+    event.dataTransfer.setData('card', stringifiedCard)
+  }
 </script>
 
 <template>
   <ul class="cardList">
-    <li v-for="card in cardsData" :key="card.id">
+    <li
+      v-for="card in cardsData"
+      :key="card.id"
+      draggable="true"
+      @dragstart="startDrag($event, card)"
+    >
       <CardForm
         :id="card.id"
         :columnId="card.columnId"
