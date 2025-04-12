@@ -7,6 +7,7 @@
   // Components
   import InputButton from '../../atoms/InputButton/InputButton.vue'
   import InputText from '../../atoms/InputText/InputText.vue'
+  import InputColor from '../../atoms/InputColor/InputColor.vue'
   import InputTextarea from '../../atoms/InputTextarea/InputTextarea.vue'
 
   // Interface
@@ -23,7 +24,8 @@
     id: props.id,
     columnId: props.columnId,
     name: props.name,
-    content: props.content
+    content: props.content,
+    color: props.color
   }
   const cardHtmlId = `card-id-${cardData.id}`
   const isADeletion = ref(false)
@@ -36,6 +38,12 @@
   const setContent = (newContent) => {
     cardData.content = newContent
     updateCardData()
+  }
+  const setColor = (newColor) => {
+    cardData.color = newColor
+    updateCardData()
+    console.log(cardData);
+
   }
   const updateCardData = () => {
     cardStore.updateCard(cardData)
@@ -66,19 +74,19 @@
           x: centerXRatio,
           y: centerYRatio
         },
-        colors: ["#7f7f7f"]
+        colors: [cardData.color]
       })
     }
   })
 </script>
 
 <template>
-  <form class="form" :id="cardHtmlId">
+  <form class="form" :id="cardHtmlId" :style="{ backgroundColor: cardData.color }">
     <div class="form-header">
       <InputText
-      label="Card title"
-      :value="cardData.name"
-      :onFocusOut="setTitle"
+        label="Card title"
+        :value="cardData.name"
+        :onFocusOut="setTitle"
       />
       <InputButton
         label="X"
@@ -90,6 +98,11 @@
       :value="cardData.content"
       :onFocusOut="setContent"
     />
+    <InputColor
+        label="Card color"
+        :value="cardData.color"
+        :onChange="setColor"
+      />
   </form>
 </template>
 
@@ -101,7 +114,6 @@
     flex-direction: column;
     gap: .5rem;
     padding: $cardPadding;
-    background-color: $cardBackground;
     border-radius: map-get($borderRadius, s);
 
     &-header {
@@ -122,6 +134,10 @@
     }
 
     button {
+      border-radius: map-get($borderRadius, xs);
+    }
+
+    .colorpicker-container {
       border-radius: map-get($borderRadius, xs);
     }
   }

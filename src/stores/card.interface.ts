@@ -3,4 +3,5 @@ export interface CardInterface {
   columnId: number;
   name: string;
   content: string;
+  color: string;
 }

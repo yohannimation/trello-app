@@ -12,7 +12,7 @@
 
 <template>
   <input
-  :id="label"
+    :id="label"
     :name="label"
     type="text"
     :value

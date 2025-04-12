@@ -42,6 +42,7 @@
         :columnId="card.columnId"
         :name="card.name"
         :content="card.content"
+        :color="card.color"
       />
     </li>
   </ul>
@@ -57,5 +58,9 @@
     margin: 20px 0;
     padding: 0;
     list-style: none;
+
+    ul {
+      padding: 0;
+    }
   }
 </style>

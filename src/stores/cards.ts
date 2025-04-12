@@ -16,6 +16,7 @@ export const useCardsStore = defineStore("cards", {
         columnId: columnId,
         name: "",
         content: "",
+        color: "#e9e9ed"
       }
 
       this.cards.unshift(cardData)
