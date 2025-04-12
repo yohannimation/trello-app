@@ -1,6 +1,8 @@
 <script setup lang="ts">
   // Basic import
+  import { onBeforeUnmount, ref } from 'vue'
   import { useCardsStore } from '@/stores/cards'
+  import confetti from 'canvas-confetti'
 
   // Components
   import InputButton from '../../atoms/InputButton/InputButton.vue'
@@ -23,23 +25,55 @@
     name: props.name,
     content: props.content
   }
+  const cardHtmlId = `card-id-${cardData.id}`
+  const isADeletion = ref(false)
 
   // Functions
   const setTitle = (newName) => {
     cardData.name = newName
-    updateDeployCardData()
+    updateCardData()
   }
   const setContent = (newContent) => {
     cardData.content = newContent
-    updateDeployCardData()
+    updateCardData()
   }
-  const updateDeployCardData = () => {
+  const updateCardData = () => {
     cardStore.updateCard(cardData)
   }
+  const deleteCardData = () => {
+    isADeletion.value = true
+    cardStore.deleteCard(cardData.id)
+  }
+  onBeforeUnmount(() => {
+    if (isADeletion.value) {
+      const cardElement = document.getElementById(cardHtmlId)
+      const rect = cardElement.getBoundingClientRect()
+
+      // Get the center coordinate of the card element
+      const centerX = rect.left + rect.width / 2 + window.scrollX;
+      const centerY = rect.top + rect.height / 2 + window.scrollY;
+
+      // Get the ratio between 0 - 1
+      const centerXRatio = centerX / window.innerWidth;
+      const centerYRatio = centerY / window.innerHeight;
+
+      confetti({
+        startVelocity: 15,
+        spread: 360,
+        ticks: 50,
+        particleCount: 250,
+        origin: {
+          x: centerXRatio,
+          y: centerYRatio
+        },
+        colors: ["#7f7f7f"]
+      })
+    }
+  })
 </script>
 
 <template>
-  <form class="form">
+  <form class="form" :id="cardHtmlId">
     <div class="form-header">
       <InputText
       label="Card title"
@@ -48,7 +82,7 @@
       />
       <InputButton
         label="X"
-        @click="cardStore.deleteCard(cardData.id)"
+        @click="deleteCardData"
       />
     </div>
     <InputTextarea

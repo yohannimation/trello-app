@@ -57,8 +57,10 @@
     flex-direction: column;
     padding: $columnPadding;
     max-width: 250px;
+    height: auto;
     background-color: $columnBackground;
     border-radius: map-get($borderRadius, l);
+    transition: $transition;
 
     &-header {
       display: grid;
