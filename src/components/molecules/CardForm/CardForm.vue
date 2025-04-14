@@ -20,35 +20,35 @@
   const props = defineProps<CardInterface>()
 
   // Variables
-  var cardData: CardInterface = {
+  var cardData = ref<CardInterface>({
     id: props.id,
     columnId: props.columnId,
     name: props.name,
     content: props.content,
     color: props.color
-  }
-  const cardHtmlId = `card-id-${cardData.id}`
+  })
+  const cardHtmlId = `card-id-${cardData.value.id}`
   const isADeletion = ref(false)
 
   // Functions
   const setTitle = (newName) => {
-    cardData.name = newName
+    cardData.value.name = newName
     updateCardData()
   }
   const setContent = (newContent) => {
-    cardData.content = newContent
+    cardData.value.content = newContent
     updateCardData()
   }
   const setColor = (newColor) => {
-    cardData.color = newColor
+    cardData.value.color = newColor
     updateCardData()
   }
   const updateCardData = () => {
-    cardStore.updateCard(cardData)
+    cardStore.updateCard(cardData.value)
   }
   const deleteCardData = () => {
     isADeletion.value = true
-    cardStore.deleteCard(cardData.id)
+    cardStore.deleteCard(cardData.value.id)
   }
   onBeforeUnmount(() => {
     if (isADeletion.value) {
@@ -72,7 +72,7 @@
           x: centerXRatio,
           y: centerYRatio
         },
-        colors: [cardData.color]
+        colors: [cardData.value.color]
       })
     }
   })
