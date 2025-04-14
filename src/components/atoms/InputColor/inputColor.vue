@@ -12,7 +12,7 @@
 
 <template>
     <label :for="label" class="colorpicker-container">
-      Set color
+      Color
       <input
         :id="label"
         :name="label"
@@ -33,15 +33,15 @@
     align-items: center;
     gap: .5rem;
     padding: $inputPadding;
-    background-color: white;
+    background-color:  $inputBackground;
     border: none;
-    border-radius: $inputBorderRadius;
+    font-family: "Comfortaa", sans-serif;
+    font-size: .9rem;
     cursor: pointer;
-    transition: $transition;
   }
 
   input {
-    background-color: white;
+    background-color: transparent;
     border: none;
   }
 

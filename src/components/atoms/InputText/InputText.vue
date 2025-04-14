@@ -27,18 +27,22 @@
 
   input {
     padding: $inputPadding;
-    background-color: transparent;
+    color: map-get($colors, dark);
+    background-color: $inputBackground;
     border: none;
-    border-radius: $inputBorderRadius;
+    border-radius: map-get($borderRadius, full);
+    font-family: "Comfortaa", sans-serif;
+    font-size: .9rem;
     cursor: text;
     transition: $transition;
   }
 
-  input:hover, input:focus {
+  input:focus {
     background-color: white;
   }
 
   input:disabled {
     cursor: default;
+    opacity: .5;
   }
 </style>

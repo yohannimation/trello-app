@@ -42,8 +42,6 @@
   const setColor = (newColor) => {
     cardData.color = newColor
     updateCardData()
-    console.log(cardData);
-
   }
   const updateCardData = () => {
     cardStore.updateCard(cardData)
@@ -113,6 +111,7 @@
     display: flex;
     flex-direction: column;
     gap: .5rem;
+    margin-top: $cardGap;
     padding: $cardPadding;
     border-radius: map-get($borderRadius, s);
 
@@ -128,8 +127,6 @@
     }
 
     textarea {
-      min-height: 50px;
-      background-color: white;
       border-radius: map-get($borderRadius, xs);
     }
 

@@ -39,13 +39,13 @@
         :value="columnData.name"
         :onFocusOut="setNewNameValue"
       />
+      <InputButton label="+" @click="cardsStore.addCard(columnData.id)" />
       <InputButton label="X" @click="columnsStore.deleteColumn(columnData.id)" />
     </div>
 
     <CardsList
       :columnId="columnData.id"
     />
-    <InputButton label="Add card" @click="cardsStore.addCard(columnData.id)" />
   </div>
 </template>
 
@@ -53,19 +53,28 @@
   @use "@/styles/_variables.scss" as *;
 
   .column {
+    position: relative;
     display: flex;
     flex-direction: column;
     padding: $columnPadding;
-    max-width: 250px;
-    height: auto;
+    padding-top: 0;
+    width: $columnWidth;
+    height: fit-content;
+    max-height: calc(100% - calc(2 * $columnPadding));
     background-color: $columnBackground;
     border-radius: map-get($borderRadius, l);
+    overflow: scroll;
     transition: $transition;
 
     &-header {
+      position: sticky;
+      top: 0;
       display: grid;
-      grid-template-columns: 80% calc(20% - 11px);
-      gap: 10px;
+      grid-template-columns: calc(100% - calc(2 * $columnButtonSize) - calc(2* $columnHeaderGap)) 38px 38px;
+      gap: $columnHeaderGap;
+      padding: $columnPadding 0 0 0;
+      width: 100%;
+      background-color: $columnBackground;
 
       input {
         border-radius: map-get($borderRadius, s);

@@ -1,32 +1,48 @@
-// Columns
-$columnsPadding: 15px;
-$columnsBorderRadius: 25px;
-$columnsBackground: rgba(0, 0, 0, .5);
+// Columns container
+$columnsPadding: 25px;
+$columnsBackground: #b4b4b4;
+$columnsBoxShadow: 7px 7px 13px #484848,
+-7px -7px 13px #ffffff;
 
 // Column
 $columnPadding: 15px;
-$columnBorderRadius: 15px;
-$columnBackground: rgba(255, 255, 255, .5);
+$columnBackground: darken($columnsBackground, 15);
+$columnWidth: 300px;
+$columnButtonSize: 38px;
+$columnHeaderGap: $columnPadding;
 
 // Card
 $cardPadding: 11px;
-$cardBorderRadius: 10px;
-$cardBackground: #e9e9ed;
+$cardBackground: darken($columnsBackground, 15);
+$cardGap: 20px;
 
 // Button
-$buttonPadding: .5rem .8rem;
-$buttonBorderRadius: 11px;
+$buttonPadding: 10px 20px;
+$buttonBackground: $columnsBackground;
+$buttonBoxShadow: inset 4px 4px 4px #4f4f4f,
+inset -4px -4px 4px #ffffff;
 
 // Input
 $inputPadding: .5rem;
-$inputBorderRadius: 11px;
+$inputBackground: rgba(255, 255, 255, .7);
 
 $transition: .2s;
+$transitionTimingFunction: cubic-bezier(.01, 0, .19, 2.36);
 
-$borderRadius: (
-    xs: 3px,
-    s: 5px,
-    m: 11px,
-    l: 15px,
-    xl: 25px
+$colors: (
+  dark: #1B1D24,
+  darkLight: #363A47,
+  white: #DCDCDC,
+  primary: #388423,
+  secondary: #48C634,
 );
+$borderRadius: (
+  xs: 3px,
+  s: 5px,
+  m: 11px,
+  l: 15px,
+  xl: 30px,
+  full: 999px
+  );
+$mainBorder: solid 3px map-get($colors, primary);
+

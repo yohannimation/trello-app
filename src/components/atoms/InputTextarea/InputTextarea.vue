@@ -26,14 +26,16 @@
 
   textarea {
     padding: $inputPadding;
-    background-color: transparent;
+    min-height: 50px;
+    background-color: $inputBackground;
     border: none;
-    border-radius: $inputBorderRadius;
+    font-family: "Comfortaa", sans-serif;
+    font-size: .9rem;
     cursor: text;
     transition: $transition;
   }
 
-  textarea:hover, textarea:focus {
+  textarea:focus {
     background-color: white;
   }
 

@@ -26,13 +26,25 @@
   @use "@/styles/_variables.scss" as *;
 
   button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: $buttonPadding;
     border: none;
-    border-radius: $buttonBorderRadius;
+    border-radius: map-get($borderRadius, full);
+    background-color: $inputBackground;
+    color: darken($buttonBackground, 60);
+    font-family: "Comfortaa", sans-serif;
     cursor: pointer;
+    transition: $transition;
+  }
+
+  button:hover {
+    background-color: white;
   }
 
   button:disabled {
     cursor: default;
+    opacity: .5;
   }
 </style>

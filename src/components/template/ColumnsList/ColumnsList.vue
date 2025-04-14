@@ -24,51 +24,59 @@
 </script>
 
 <template>
-  <div class="container">
-    <InputButton
-      class="container-addButton"
-      label="Add column"
-      @click="columnsStore.addColumn()"
-    />
-    <ul class="container-columnList">
-      <li
-        v-for="(column) in columnsStore.columns"
-        :key="column.id"
-        @drop="onDrop($event, column.id)"
-        @dragenter.prevent
-        @dragover.prevent
-      >
-        <Column
-          :id="column.id"
-          :name="column.name"
-        />
-      </li>
-    </ul>
-  </div>
+  <ul class="container-list">
+    <li
+      v-for="(column) in columnsStore.columns"
+      :key="column.id"
+      @drop="onDrop($event, column.id)"
+      @dragenter.prevent
+      @dragover.prevent
+    >
+      <Column
+        :id="column.id"
+        :name="column.name"
+      />
+    </li>
+    <li class="container-list-default-column">
+      <InputButton
+        class="container-addButton"
+        label="Add column"
+        @click="columnsStore.addColumn()"
+      />
+    </li>
+  </ul>
 </template>
 
 <style scoped lang="scss">
   @use "@/styles/_variables.scss" as *;
 
-  .container {
+  .container-list {
     display: flex;
-    flex-direction: column;
+    gap: $columnsPadding;
+    margin: 0;
     padding: $columnsPadding;
+    height: calc(100% - 2rem);
     background-color: $columnsBackground;
+    box-shadow: $columnsBoxShadow;
     border-radius: map-get($borderRadius, xl);
+    list-style: none;
     overflow: scroll;
 
-    &-addButton {
-      max-width: 100px;
-    }
+    &-default-column {
+      width: $columnWidth;
+      height: 66px;
 
-    &-columnList {
-      display: flex;
-      gap: 15px;
-      margin: 0;
-      margin-top: 20px;
-      padding: 0;
-      list-style: none;
+      button {
+        padding: $columnPadding;
+        width: $columnWidth;
+        height: 100%;
+        background-color: $columnBackground;
+        border-radius: map-get($borderRadius, l);
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: map-get($colors, white);
+        text-align: left;
+      }
     }
   }
 </style>

@@ -54,8 +54,6 @@
   .cardList {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    margin: 20px 0;
     padding: 0;
     list-style: none;
 
