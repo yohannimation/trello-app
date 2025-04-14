@@ -1,5 +1,6 @@
 <script setup lang="ts">
   // Basic import
+  import { ref } from 'vue'
   import { useColumnsStore } from '@/stores/columns'
   import { useCardsStore } from '@/stores/cards'
 
@@ -19,15 +20,15 @@
   const props = defineProps<ColumnInterface>()
 
   // Variables
-  var columnData: ColumnInterface = {
+  var columnData = ref<ColumnInterface>({
     id: props.id,
     name: props.name
-  }
+  })
 
   // Functions
   const setNewNameValue = (columnName) => {
-    columnData.name = columnName
-    columnsStore.updateColumn(columnData)
+    columnData.value.name = columnName
+    columnsStore.updateColumn(columnData.value)
   }
 </script>
 
