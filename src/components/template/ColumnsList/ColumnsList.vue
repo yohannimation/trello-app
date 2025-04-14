@@ -14,12 +14,18 @@
   const columnsStore = useColumnsStore()
   const cardsStore = useCardsStore()
 
+  // Variables
+  const variableToUppercase: string = "Add column"
+
   // Functions
   const onDrop = (event, columnId) => {
     const stringifiedCard = event.dataTransfer.getData('card')
     var cardData: CardInterface = JSON.parse(stringifiedCard)
 
     cardsStore.updateCard({ ...cardData, columnId: columnId })
+  }
+  const uppercase = (text: string) => {
+    return text.toUpperCase()
   }
 </script>
 
@@ -40,7 +46,7 @@
     <li class="container-list-default-column">
       <InputButton
         class="container-addButton"
-        label="Add column"
+        :label=uppercase(variableToUppercase)
         @click="columnsStore.addColumn()"
       />
     </li>
