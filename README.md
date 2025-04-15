@@ -29,6 +29,8 @@ See my [portfolio yohannimation](https://yohannimation.fr)
 The goal of this project was to implement a Trello-like Kanban board using Vue 3 and TypeScript.  
 The application allows users to create and manage columns and cards in a visual and interactive way.
 
+This project is for educational purposes.
+
 ---
 
 ## ✨ Features
@@ -55,3 +57,20 @@ npm install
 
 # Run the app locally
 npm run dev
+```
+
+---
+
+## 🧭 Planned Features
+
+- 🎨 Enhance the visual design with a more polished and modern UI
+- 🎞️ Add animations and transitions for smoother interactions
+- 📱 Improve accessibility and responsiveness
+
+---
+
+## 🙋‍♂️ Author
+
+Created by **Yohann RENAULD**
+
+[Github](https://github.com/yohannimation) - [Portfolio yohannimation](https://yohannimation.fr)
