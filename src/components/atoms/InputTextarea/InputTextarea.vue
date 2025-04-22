@@ -32,6 +32,7 @@
     font-family: "Comfortaa", sans-serif;
     font-size: .9rem;
     cursor: text;
+    resize: vertical;
     transition: $transition;
   }
 
