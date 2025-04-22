@@ -63,9 +63,8 @@ npm run dev
 
 ## 🧭 Planned Features
 
-- 🎨 Enhance the visual design with a more polished and modern UI
-- 🎞️ Add animations and transitions for smoother interactions
-- 📱 Improve accessibility and responsiveness
+- 📱 Improve accessibility
+- 📋 Add task list (with checkbox) on cards
 
 ---
 
