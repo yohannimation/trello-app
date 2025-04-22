@@ -10,3 +10,9 @@ body {
   font-weight: normal;
   background-color: #b4b4b4;
 }
+
+@media (width <= 700px) {
+  #app {
+    padding: 4rem 1rem;
+  }
+}
