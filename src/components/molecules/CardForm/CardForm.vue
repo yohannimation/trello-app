@@ -5,6 +5,7 @@
   import confetti from 'canvas-confetti'
 
   // Components
+  import { Icon } from '@iconify/vue'
   import InputButton from '../../atoms/InputButton/InputButton.vue'
   import InputText from '../../atoms/InputText/InputText.vue'
   import InputColor from '../../atoms/InputColor/InputColor.vue'
@@ -87,9 +88,14 @@
         :onFocusOut="setTitle"
       />
       <InputButton
-        label="X"
+        label="deleteCardButton"
         @click="deleteCardData"
-      />
+      >
+        <Icon
+          icon="hugeicons:cancel-01"
+          width="18"
+        />
+      </InputButton>
     </div>
     <InputTextarea
       label="Card content"

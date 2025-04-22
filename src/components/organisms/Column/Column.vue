@@ -5,6 +5,7 @@
   import { useCardsStore } from '@/stores/cards'
 
   // Components
+  import { Icon } from '@iconify/vue'
   import InputButton from '../../atoms/InputButton/InputButton.vue'
   import InputText from '../../atoms/InputText/InputText.vue'
   import CardsList from '../../molecules/CardsList/CardsList.vue'
@@ -40,8 +41,18 @@
         :value="columnData.name"
         :onFocusOut="setNewNameValue"
       />
-      <InputButton label="+" @click="cardsStore.addCard(columnData.id)" />
-      <InputButton label="X" @click="columnsStore.deleteColumn(columnData.id)" />
+      <InputButton label="addCardButton" @click="cardsStore.addCard(columnData.id)">
+        <Icon
+          icon="hugeicons:add-01"
+          width="18"
+        />
+      </InputButton>
+      <InputButton label="deleteColumnButton" @click="columnsStore.deleteColumn(columnData.id)">
+        <Icon
+          icon="hugeicons:cancel-01"
+          width="18"
+        />
+      </InputButton>
     </div>
 
     <CardsList

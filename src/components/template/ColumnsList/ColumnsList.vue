@@ -46,9 +46,11 @@
     <li class="container-list-default-column">
       <InputButton
         class="container-addButton"
-        :label=uppercase(variableToUppercase)
+        label="addColumnButton"
         @click="columnsStore.addColumn()"
-      />
+      >
+        {{ uppercase(variableToUppercase) }}
+      </InputButton>
     </li>
   </ul>
 </template>

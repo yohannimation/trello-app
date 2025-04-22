@@ -18,7 +18,7 @@
     type="button"
     @click="handleClick"
   >
-    {{ label }}
+    <slot></slot>
   </button>
 </template>
 
@@ -29,7 +29,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: $buttonPadding;
     border: none;
     border-radius: map-get($borderRadius, full);
     background-color: $inputBackground;
