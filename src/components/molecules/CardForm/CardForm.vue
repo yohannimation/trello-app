@@ -10,6 +10,7 @@
   import InputText from '../../atoms/InputText/InputText.vue'
   import InputColor from '../../atoms/InputColor/InputColor.vue'
   import InputTextarea from '../../atoms/InputTextarea/InputTextarea.vue'
+  import Modal from '../Modal/Modal.vue'
 
   // Interface
   import type { CardInterface } from '../../../stores/card.interface'
@@ -82,31 +83,41 @@
 <template>
   <form class="form" :id="cardHtmlId" :style="{ backgroundColor: cardData.color }">
     <div class="form-header">
-      <InputText
-        label="Card title"
-        :value="cardData.name"
-        :onFocusOut="setTitle"
-      />
-      <InputButton
-        label="deleteCardButton"
-        @click="deleteCardData"
-      >
-        <Icon
-          icon="hugeicons:cancel-01"
-          width="18"
-        />
-      </InputButton>
+      <p class="form-header-name">{{ cardData.name ? cardData.name : "Card name" }}</p>
+      <Modal>
+        <template #open-modal-button>
+          <Icon icon="hugeicons:pencil-edit-02" width="18" />
+        </template>
+        <template #title>
+          <InputText
+            label="Card name"
+            :value="cardData.name"
+            :onFocusOut="setTitle"
+          />
+        </template>
+        <template #content>
+          <InputTextarea
+            label="Card content"
+            :value="cardData.content"
+            :onFocusOut="setContent"
+          />
+          <InputColor
+            label="Card color"
+            :value="cardData.color"
+            :onChange="setColor"
+          />
+        </template>
+        <template #footer>
+          <InputButton
+            label="deleteCardButton"
+            @click="deleteCardData"
+          >
+            <Icon icon="hugeicons:delete-02" width="24" />
+          </InputButton>
+        </template>
+      </Modal>
     </div>
-    <InputTextarea
-      label="Card content"
-      :value="cardData.content"
-      :onFocusOut="setContent"
-    />
-    <InputColor
-        label="Card color"
-        :value="cardData.color"
-        :onChange="setColor"
-      />
+    <p class="form-content">{{ cardData.content ? cardData.content : "No content" }}</p>
   </form>
 </template>
 
@@ -120,28 +131,54 @@
     margin-top: $cardGap;
     padding: $cardPadding;
     border-radius: map-get($borderRadius, s);
+    font-family: "Comfortaa", sans-serif;
 
     &-header {
       display: grid;
       grid-template-columns: 80% calc(20% - 11px);
       gap: 10px;
+      height: 45px;
 
-      input {
+      &-name {
+        margin: 0;
+        padding: 13.5px 10px;
+        background-color: $inputBackground;
         border-radius: map-get($borderRadius, xs);
-        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
 
-    textarea {
+    &-content {
+      margin: 0;
+      padding: 10px;
+      max-height: 100px;
+      background-color: $inputBackground;
       border-radius: map-get($borderRadius, xs);
+      overflow: scroll;
+    }
+
+    input {
+      width: calc(100% - calc(2 * $inputPadding));
+      height: calc(100% - calc(2 * $inputPadding));
+      border-radius: map-get($borderRadius, l);
+      font-weight: 600;
+    }
+
+    textarea {
+      width: calc(100% - calc(2 * $inputPadding));
+      border-radius: map-get($borderRadius, l);
     }
 
     button {
-      border-radius: map-get($borderRadius, xs);
+      width: 50px;
+      height: 50px;
+      border-radius: map-get($borderRadius, l);
     }
 
     .colorpicker-container {
-      border-radius: map-get($borderRadius, xs);
+      border-radius: map-get($borderRadius, l);
     }
   }
 </style>
