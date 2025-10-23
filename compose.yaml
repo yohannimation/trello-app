@@ -1,0 +1,12 @@
+services:
+  vue-app:
+    build: .
+    container_name: trello-app_node
+    networks:
+      - nginx-proxy-manager-stack_default
+    ports:
+      - "8080:80"
+
+networks:
+  nginx-proxy-manager-stack_default:
+    external: true
