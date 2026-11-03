@@ -1,0 +1,6 @@
+services:
+  vue-frontend:
+    build: .
+    container_name: trello-app-frontend
+    ports:
+      - "${VUE_PORT:?Variable VUE_PORT manquante}:80"
